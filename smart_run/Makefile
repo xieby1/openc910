@@ -105,7 +105,7 @@ else
           SIMULATOR_LOG := 
         else
             ifeq ($(SIM), verilator)
-              SIMULATOR_OPT := -Os -x-assign 0 -Wno-fatal --threads ${THREADS}
+              SIMULATOR_OPT := -Os -x-assign 0 -Wno-fatal --threads ${THREADS} --no-timing
               SIMULATOR_DEF := -cc --exe --top-module top 
               SIMULATOR_LOG := 
             else
@@ -148,7 +148,8 @@ endif
 
 buildVerilator:
 	@cp ./logical/tb/Makefile_obj ./work/Makefile_obj
-	@cd ./work && make -j -C obj_dir -f ../Makefile_obj
+	# TODO: 让make buildVerilator的线程数可控，不要是暴力的-j，会爆内存
+	@cd ./work && make -j4 -C obj_dir -f ../Makefile_obj
 cleansim:
 	@cd ./work && rm -rf simv* csrc ucli.key *.vcs.log novas_dump.log *.fsdb
 cleanVerilator:
@@ -191,7 +192,8 @@ runVerilator:
 	@cd ./work && obj_dir/Vtop
 
 runcase:
-	@make cleanVerilator
+	# 不要每次make都各种clean，构建更加复用的makefile
+	# @make cleanVerilator
 ifeq ($(CASE),)
 	$(error Please specify CASE=xxx on the command line, like: \
         $(newline)   > make buildcase CASE=xxx... \
