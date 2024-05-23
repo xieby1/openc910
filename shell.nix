@@ -16,5 +16,17 @@ in pkgs.mkShell {
   in ''
     export CODE_BASE_PATH=$(realpath ./C910_RTL_FACTORY)
     export TOOL_EXTENSION=${xuantie-elf-toolchain}/bin
+
+    # push xuantie-elf-toolchain to cachix
+    cachix_dhall=/home/xieby1/Gist/Config/cachix.dhall
+    if [[ -f $cachix_dhall ]]; then
+      file=./.direnv/xuantie-elf-toolchain
+      if [[ -f $file && "$(cat $file)" == "${xuantie-elf-toolchain}" ]]; then
+        echo cachix already pushed
+      else
+        ${pkgs.cachix}/bin/cachix -c $cachix_dhall push xieby1 ${xuantie-elf-toolchain}
+        echo ${xuantie-elf-toolchain} > $file
+      fi
+    fi
   '';
 }
