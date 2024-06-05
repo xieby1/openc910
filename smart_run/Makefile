@@ -67,7 +67,7 @@ VERILATOR_FLAGS += -Wno-fatal
 
 ifeq ($(DUMP), on)
 ifeq (${SIM}, verilator)
-SIM_DUMP := --trace
+SIM_DUMP := --trace-fst
 else
 SIM_DUMP :=
 endif

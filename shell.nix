@@ -25,6 +25,7 @@ in pkgs.mkShell {
   packages = with pkgs; [
     _h_
     verilator
+    zlib
   ];
 
   shellHook = let

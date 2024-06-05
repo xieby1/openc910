@@ -367,7 +367,7 @@ module top(
       $dumpfile("test.vcd");
       $dumpvars;  
     `else
-      $dumpfile("test.vcd");
+      $dumpfile("test.fst");
       $dumpvars;  
     `endif
   `endif
